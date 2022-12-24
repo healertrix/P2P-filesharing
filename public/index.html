@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <head>
+        <title>File Transfer</title>
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+</head>
+
+<body>
+    <h1>P2P File sharing</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+        
+    </form>
+    <br />
+    <select id="files">
+        <option value="">Select a file</option>
+    </select>
+    <br />
+    <a href="/uploads/<filename>" id="download-link">Download</a>
+
+    <script>
+        fetch('/files')
+            .then(response => response.json())
+            .then(files => {
+                const select = document.getElementById('files');
+                files.forEach(file => {
+                    const option = document.createElement('option');
+                    option.value = file;
+                    option.text = file;
+                    select.add(option);
+                });
+            });
+
+        const select = document.getElementById('files');
+        select.addEventListener('change', e => {
+            const downloadLink = document.getElementById('download-link');
+            downloadLink.href = `/uploads/${e.target.value}`;
+        });
+    </script>
+</body>
+
+</html>
